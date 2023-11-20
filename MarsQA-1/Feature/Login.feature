@@ -1,7 +1,6 @@
 ﻿Feature: Login
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+	As a user I would be able to login to Mars system.
+	So that I can manage my Languages and Skills I hold.
 
 @mytag
 Scenario: Login to website
