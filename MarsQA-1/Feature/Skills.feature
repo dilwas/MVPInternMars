@@ -6,66 +6,74 @@ Background:
 	Given I login to the website
 	And All the exsisting records should be cleared
 
-Scenario: A_Add new skill
-	When I add a new skill record
-	Then New skill should save to the list
+Scenario Outline: A_Add new skill
+	When I add a new skill record including <Skill> <SkillLevel>
+	Then New skill should save to the list including <Skill> <SkillLevel>
 
-Scenario: B_Add multiple skills
-    When I add a skill 1
-	And I add a skill 2
-	And I add a skill 3
-	Then All skills should save to the list
+Examples:
+	| Skill | SkillLevel |
+	| 'C#'  | 'Beginner' |
 
-Scenario: C_Add a skill with special characters
-	When I add a new skill record with special characters
-	Then New skill with special characters should save to the list
+Scenario Outline: B_Add multiple skills
+	When I add a new skill record including <Skill1> <SkillLevel1>
+	And I add a new skill record including <Skill2> <SkillLevel2>
+	And I add a new skill record including <Skill3> <SkillLevel3>
+	Then All skills should save to the list including <Skill1> <SkillLevel1> <Skill2> <SkillLevel2> <Skill3> <SkillLevel3>
 
-Scenario: D_Add a skill with 100 characters
-	When I add a new skill record with 100 characters
-	Then New skill with 100 characters should save to the list
+Examples:
+	| Skill1 | SkillLevel1 | Skill2 | SkillLevel2 | Skill3 | SkillLevel3    |
+	| 'C#'   | 'Beginner'  | 'Java' | 'Beginner'  | 'Jira' | 'Intermediate' |
 
-Scenario: E_Cancel adding lanuage record
-    When I cancel adding skill record
+Scenario: C_Add a skill with disruptive data
+	When I add a new skill record including <Skill> <SkillLevel>
+	Then New skill should save to the list including <Skill> <SkillLevel>
+
+Examples:
+	| Skill                                                                                                                                      | SkillLevel |
+	| 'Java$%^'                                                                                                                                  | 'Beginner' |
+	| 'QWERTYUIOPASDFGHJKLZXCVBNM1234567890QWERTYUIOPASDFGHJKLZXCVBNM1234567890QWERTYUIOPASDFGHJKLZXCVBNM1234567890QWERTYUIOPASDFGHJKLZXCVBNM12' | 'Expert'   |
+
+Scenario: D_Cancel adding lanuage record
+	When I cancel adding skill record
 	Then Adding new skill should be cancel
 
-Scenario: F_Edit existing skill record by changing skill
-	When I add a new skill record
-	Then I edit an exsisting skill
-	And Edited skill should save to the list
+Scenario Outline: E_Edit existing skill records
+	Given All the exsisting records should be cleared
+	When I add a new skill record including <Skill> <SkillLevel>
+	And I edit an exsisting skill including <UpdatedSkill> <UpdatedSkillLevel>
+	Then Edited skill should save to the list including <UpdatedSkill> <UpdatedSkillLevel>
 
-Scenario: G_Edit existing skill record by changing skill level
-	When I add a new skill record
-	Then I edit an exsisting skill level
-	And Edited skill level should save to the list
+Examples:
+	| Skill | SkillLevel | UpdatedSkill | UpdatedSkillLevel |
+	| 'C#'  | 'Beginner' | 'Java'       | 'Beginner'        |
+	| 'C#'  | 'Beginner' | 'C#'         | 'Expert'          |
+	| 'C#'  | 'Beginner' | 'Cucumber'   | 'Intermediate'    |
 
-Scenario: H_Edit existing skill record by changing both skill and skill level
-	When I add a new skill record
-	Then I edit an exsisting skill and skill level
-	And Edited skill and skill level should save to the list
+Scenario Outline: F_Delete skill
+	When I add a new skill record including <Skill> <SkillLevel>
+	And I delete an exsisting skill record
+	Then The exsisting <Skill> skill should delete from skill records
 
-Scenario: I_Delete skill
-	When I add a new skill record
-	Then I delete an exsisting skill record
-	And The exsisting skill should delete from skill records
+Examples:
+	| Skill | SkillLevel |
+	| 'C#'  | 'Beginner' |
 
-Scenario: J_Verify cannot add skill without skill level
-	When I try to add a new skill without selecting skill level
+Scenario Outline: G_Verify cannot add skill with invalid data
+	When I add a new skill record including <Skill> <SkillLevel>
 	Then Vaildation popup should appear as Please enter skill and experience level
 
-Scenario: K_Verify cannot add skill without skill text
-	When I try to add a new skill without entering skill 
-	Then Vaildation popup should appear as Please enter skill and experience level
+Examples:
+	| Skill | SkillLevel |
+	| 'C#'  | ''         |
+	| ''    | 'Beginner' |
+	| ''    | ''         |
 
-Scenario: L_Verify cannot add skill without skill and skill level
-	When I try to add a new skill without entering skill and selecting skill level
-	Then Vaildation popup should appear as Please enter skill and experience level
+Scenario Outline: H_Verify cannot add an existing skills
+	When I add a new skill record including <Skill> <SkillLevel>
+	When I add a new skill record including <Skill2> <SkillLevel2>
+	Then Vaildation popup should appear as <PopupMsg>
 
-Scenario: M_Verify cannot add an existing skills with same skill level
-	When I add a new skill record
-	And I try to add an existing skill 
-	Then Vaildation popup should appear as This skill is already exist in your skill list.
-
-Scenario: N_Verify cannot add an existing skills with different skill level
-	When I add a new skill record
-	And I try to add an existing skill with different skill level
-	Then Vaildation popup should appear as Duplicated data
+Examples:
+	| Skill | SkillLevel | Skill2 | SkillLevel2    | PopupMsg                                        |
+	| 'C#'  | 'Beginner' | 'C#'   | 'Beginner'     | This skill is already exist in your skill list. |
+	| 'C#'  | 'Beginner' | 'C#'   | 'Intermediate' | Duplicated data                                 |

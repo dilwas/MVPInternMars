@@ -394,9 +394,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Feature\Login.cs" />
-    <Compile Include="Feature\Languages.cs" />
-    <Compile Include="Feature\Skills.cs" />
+    <Compile Include="StepDefinitions\Login.cs" />
+    <Compile Include="StepDefinitions\Languages.cs" />
+    <Compile Include="StepDefinitions\Skills.cs" />
     <Compile Include="SpecflowPages\Helpers\CommonMethods.cs" />
     <Compile Include="SpecflowPages\Helpers\ConstantHelpers.cs" />
     <Compile Include="SpecflowPages\Helpers\Driver.cs" />

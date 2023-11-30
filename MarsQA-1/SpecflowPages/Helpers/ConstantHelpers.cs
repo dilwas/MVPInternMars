@@ -15,7 +15,7 @@ namespace MarsQA_1.Helpers
         public static string ScreenshotPath = @"MarsQA-1\TestReports\Screenshots\";
 
         //ExtentReportsPath
-        public static string ReportsPath = "";
+        public static string ReportsPath = @"MarsQA-1\TestReports";
 
         //ReportXML Path
         public static string ReportXMLPath = "";

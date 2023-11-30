@@ -16,10 +16,12 @@ namespace MarsQA_1.Utils
         private static ExtentReports extent;
         private static string img;
 
+        SignIn signInPageObj = new SignIn();
+
         [BeforeTestRun]
         public static void InitializeReport()
         {
-            var sparkReporter = new ExtentSparkReporter(@"Report.html");
+            var sparkReporter = new ExtentSparkReporter(ConstantHelpers.ReportsPath + "Report.html");
             sparkReporter.Config.Theme = AventStack.ExtentReports.Reporter.Config.Theme.Dark;
             extent = new ExtentReports();
             extent.AttachReporter(sparkReporter);
@@ -66,7 +68,7 @@ namespace MarsQA_1.Utils
             Initialize();
             ExcelLibHelper.PopulateInCollection(@"MarsQA-1\SpecflowTests\Data\Mars.xlsx", "Credentials");
             //call the SignIn class
-            SignIn.SigninStep();
+            signInPageObj.SigninStep();
             scenario = featureName.CreateNode<Scenario>(ScenarioContext.Current.ScenarioInfo.Title);
             img = SaveScreenShotClass.SaveScreenshot(Driver.driver, "Report");
         }
